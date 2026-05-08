@@ -6,6 +6,14 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.3.0',
+    date: '2026-05-08',
+    changes: [
+      { type: 'change', text: 'Removed quick ±5/±10 buttons — tap any ± for 1, hold for 10' },
+      { type: 'change', text: 'Long-press applies to life, poison, commander damage, and all extra counters' },
+    ],
+  },
+  {
     version: '1.2.0',
     date: '2026-05-08',
     changes: [

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import type { Player, PlayerColor, CounterType } from '../types'
 import { COMMANDER_DAMAGE_THRESHOLD, POISON_THRESHOLD } from '../gameState'
+import { useLongPress } from '../hooks/useLongPress'
 import './PlayerCard.css'
 
 const PALETTE: PlayerColor[] = [
@@ -31,6 +32,31 @@ interface Props {
   onExtraCounterChange: (id: number, counter: CounterType, delta: number) => void
   onRename: (id: number, name: string) => void
   onRecolor: (id: number, color: PlayerColor) => void
+}
+
+function AdjBtn({
+  onTap,
+  onHold,
+  children,
+  className = '',
+  disabled,
+}: {
+  onTap: () => void
+  onHold: () => void
+  children: React.ReactNode
+  className?: string
+  disabled?: boolean
+}) {
+  const lp = useLongPress(onTap, onHold)
+  return (
+    <button
+      className={className}
+      disabled={disabled}
+      {...lp}
+    >
+      {children}
+    </button>
+  )
 }
 
 export default function PlayerCard({
@@ -77,16 +103,18 @@ export default function PlayerCard({
                   <div className="cmd-row-top">
                     <span className="cmd-row-name">{attacker.name}</span>
                     <div className="cmd-row-controls">
-                      <button
+                      <AdjBtn
                         className="cmd-adj-btn"
-                        onClick={() => onApplyCmdDamage(player.id, attacker.id, -1)}
+                        onTap={() => onApplyCmdDamage(player.id, attacker.id, -1)}
+                        onHold={() => onApplyCmdDamage(player.id, attacker.id, -10)}
                         disabled={dmg === 0}
-                      >−</button>
+                      >−</AdjBtn>
                       <span className={`cmd-row-val ${atLimit ? 'at-limit' : ''}`}>{dmg}</span>
-                      <button
+                      <AdjBtn
                         className="cmd-adj-btn"
-                        onClick={() => onApplyCmdDamage(player.id, attacker.id, 1)}
-                      >+</button>
+                        onTap={() => onApplyCmdDamage(player.id, attacker.id, 1)}
+                        onHold={() => onApplyCmdDamage(player.id, attacker.id, 10)}
+                      >+</AdjBtn>
                     </div>
                   </div>
                   <div className="cmd-progress-track">
@@ -102,7 +130,7 @@ export default function PlayerCard({
               )
             })}
           </div>
-          <p className="cmd-panel-note">Damage also reduces life total</p>
+          <p className="cmd-panel-note">Tap ±1 · Hold ±10</p>
         </div>
       )}
 
@@ -121,21 +149,24 @@ export default function PlayerCard({
                   <span className="counter-def-icon">{icon}</span>
                   <span className="counter-def-label">{label}</span>
                   <div className="counter-def-controls">
-                    <button
+                    <AdjBtn
                       className="cmd-adj-btn"
-                      onClick={() => onExtraCounterChange(player.id, key, -1)}
+                      onTap={() => onExtraCounterChange(player.id, key, -1)}
+                      onHold={() => onExtraCounterChange(player.id, key, -10)}
                       disabled={val === 0}
-                    >−</button>
+                    >−</AdjBtn>
                     <span className="counter-def-val">{val}</span>
-                    <button
+                    <AdjBtn
                       className="cmd-adj-btn"
-                      onClick={() => onExtraCounterChange(player.id, key, 1)}
-                    >+</button>
+                      onTap={() => onExtraCounterChange(player.id, key, 1)}
+                      onHold={() => onExtraCounterChange(player.id, key, 10)}
+                    >+</AdjBtn>
                   </div>
                 </div>
               )
             })}
           </div>
+          <p className="cmd-panel-note">Tap ±1 · Hold ±10</p>
         </div>
       )}
 
@@ -175,31 +206,39 @@ export default function PlayerCard({
 
       {/* Life total */}
       <div className="life-section">
-        <button className="life-btn minus" onClick={() => onLifeChange(player.id, -1)}>−</button>
+        <AdjBtn
+          className="life-btn minus"
+          onTap={() => onLifeChange(player.id, -1)}
+          onHold={() => onLifeChange(player.id, -10)}
+        >−</AdjBtn>
         <div className="life-display">
           <span className="life-number">{player.life}</span>
+          <span className="life-hint">tap ±1 · hold ±10</span>
         </div>
-        <button className="life-btn plus" onClick={() => onLifeChange(player.id, 1)}>+</button>
-      </div>
-
-      {/* Quick increments */}
-      <div className="quick-btns">
-        {[-10, -5, +5, +10].map(d => (
-          <button key={d} className="quick-btn" onClick={() => onLifeChange(player.id, d)}>
-            {d > 0 ? `+${d}` : d}
-          </button>
-        ))}
+        <AdjBtn
+          className="life-btn plus"
+          onTap={() => onLifeChange(player.id, 1)}
+          onHold={() => onLifeChange(player.id, 10)}
+        >+</AdjBtn>
       </div>
 
       {/* Status row */}
       <div className="status-row">
         <div className="counter-group">
-          <button className="counter-btn" onClick={() => onPoisonChange(player.id, -1)}>−</button>
+          <AdjBtn
+            className="counter-btn"
+            onTap={() => onPoisonChange(player.id, -1)}
+            onHold={() => onPoisonChange(player.id, -5)}
+          >−</AdjBtn>
           <div className={`counter-display ${player.poison >= POISON_THRESHOLD ? 'danger' : ''}`}>
             <span className="counter-icon">☠</span>
             <span className="counter-val">{player.poison}</span>
           </div>
-          <button className="counter-btn" onClick={() => onPoisonChange(player.id, 1)}>+</button>
+          <AdjBtn
+            className="counter-btn"
+            onTap={() => onPoisonChange(player.id, 1)}
+            onHold={() => onPoisonChange(player.id, 5)}
+          >+</AdjBtn>
         </div>
 
         <button
@@ -228,7 +267,6 @@ export default function PlayerCard({
         </div>
       )}
 
-      {/* Active extra counter chips */}
       {activeCounters.length > 0 && !countersOpen && (
         <div className="extra-counter-chips">
           {activeCounters.map(({ key, icon }) => (
