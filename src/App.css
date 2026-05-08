@@ -150,3 +150,10 @@
 .players-6 > .player-card:nth-child(2),
 .players-6 > .player-card:nth-child(3)   { transform: rotate(180deg); }
 
+/* ── Name alignment ──
+   For ALL players, name-row is first in the flex column (default order:0).
+   Bottom-row cards (normal): physical top = center cross → name at center ✓
+   Top-row cards (rotated 180°): rotation maps physical top → visual bottom on screen,
+   which is the center cross for those cards → name at center ✓
+   No order overrides needed; the rotation handles it. ── */
+
