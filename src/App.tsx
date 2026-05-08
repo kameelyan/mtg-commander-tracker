@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import type { GameState, MtgColor } from './types'
 import {
   createInitialState,
@@ -23,6 +23,8 @@ export default function App() {
   const [cmdModal, setCmdModal] = useState<{ victimId: number } | null>(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [releaseNotesOpen, setReleaseNotesOpen] = useState(false)
+  const [confirmingReset, setConfirmingReset] = useState(false)
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const adjustLife = useCallback((playerId: number, delta: number) => {
     setGame(g => applyLifeChange(g, playerId, delta))
@@ -49,6 +51,17 @@ export default function App() {
     setSettingsOpen(false)
   }, [])
 
+  const handleQuickReset = useCallback(() => {
+    if (!confirmingReset) {
+      setConfirmingReset(true)
+      resetTimerRef.current = setTimeout(() => setConfirmingReset(false), 3000)
+    } else {
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current)
+      setConfirmingReset(false)
+      setGame(g => resetGame(g.playerCount, g.startingLife))
+    }
+  }, [confirmingReset])
+
   const activePlayers = game.players.filter(p => !p.eliminated)
   const winner = activePlayers.length === 1 ? activePlayers[0] : null
 
@@ -58,6 +71,14 @@ export default function App() {
         <span className="app-title">⚔ Commander</span>
         <div className="header-actions">
           {winner && <span className="winner-badge">👑 {winner.name} wins!</span>}
+          <button
+            className={`reset-quick-btn ${confirmingReset ? 'confirming' : ''}`}
+            onClick={handleQuickReset}
+            title={confirmingReset ? 'Tap again to reset' : 'Reset game'}
+          >
+            <span className="reset-icon">↺</span>
+            {confirmingReset ? 'Sure?' : 'Reset'}
+          </button>
           <HamburgerMenu
             version={version}
             onOpenSettings={() => setSettingsOpen(true)}
