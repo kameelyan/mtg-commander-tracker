@@ -150,10 +150,25 @@
 .players-6 > .player-card:nth-child(2),
 .players-6 > .player-card:nth-child(3)   { transform: rotate(180deg); }
 
-/* ── Name alignment ──
-   For ALL players, name-row is first in the flex column (default order:0).
-   Bottom-row cards (normal): physical top = center cross → name at center ✓
-   Top-row cards (rotated 180°): rotation maps physical top → visual bottom on screen,
-   which is the center cross for those cards → name at center ✓
-   No order overrides needed; the rotation handles it. ── */
+/* ── Name horizontal alignment toward the center of the board ──
+   Default (flex-start) reads left. After 180° rotation left becomes right visually.
+   Cards in the right column of the top row, and left column of the bottom row,
+   need flex-end so they point inward toward the board center. ── */
+
+/* 2-player (single column): no left/right issue */
+
+/* 3-player */
+.players-3 > .player-card:nth-child(2) .player-name { text-align: right; }
+
+/* 4-player */
+.players-4 > .player-card:nth-child(2) .player-name,
+.players-4 > .player-card:nth-child(3) .player-name { text-align: right; }
+
+/* 5-player */
+.players-5 > .player-card:nth-child(2) .player-name,
+.players-5 > .player-card:nth-child(3) .player-name { text-align: right; }
+
+/* 6-player */
+.players-6 > .player-card:nth-child(3) .player-name,
+.players-6 > .player-card:nth-child(4) .player-name { text-align: right; }
 
