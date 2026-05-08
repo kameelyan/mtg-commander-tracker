@@ -4,11 +4,13 @@ import './SettingsModal.css'
 interface Props {
   currentPlayerCount: number
   currentStartingLife: number
+  showHints: boolean
+  onToggleHints: (val: boolean) => void
   onReset: (playerCount: number, startingLife: number) => void
   onClose: () => void
 }
 
-export default function SettingsModal({ currentPlayerCount, currentStartingLife, onReset, onClose }: Props) {
+export default function SettingsModal({ currentPlayerCount, currentStartingLife, showHints, onToggleHints, onReset, onClose }: Props) {
   const [playerCount, setPlayerCount] = useState(currentPlayerCount)
   const [startingLife, setStartingLife] = useState(currentStartingLife)
   const [confirmReset, setConfirmReset] = useState(false)
@@ -57,6 +59,23 @@ export default function SettingsModal({ currentPlayerCount, currentStartingLife,
               onChange={e => setStartingLife(Math.max(1, Number(e.target.value)))}
             />
           </div>
+        </div>
+
+        <div className="setting-row">
+          <label>Display</label>
+          <label className="toggle-row">
+            <span className="toggle-label">Show hold-to-adjust hints</span>
+            <span className="toggle-desc">Tap ±1 · Hold ±10 labels on buttons</span>
+            <input
+              type="checkbox"
+              className="toggle-input"
+              checked={showHints}
+              onChange={e => onToggleHints(e.target.checked)}
+            />
+            <span className="toggle-track">
+              <span className="toggle-thumb" />
+            </span>
+          </label>
         </div>
 
         {!confirmReset ? (

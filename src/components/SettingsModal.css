@@ -47,6 +47,62 @@
 }
 .life-input:focus { border-color: #c9a84c; }
 
+/* Toggle switch */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 0;
+  flex-wrap: wrap;
+}
+.toggle-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  flex: 1;
+}
+.toggle-desc {
+  width: 100%;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  order: 10;
+  padding-left: 0;
+}
+.toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle-track {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.toggle-input:checked ~ .toggle-track {
+  background: #c9a84c;
+  border-color: #c9a84c;
+}
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.toggle-input:checked ~ .toggle-track .toggle-thumb {
+  transform: translateX(18px);
+}
+
 .reset-btn {
   padding: 10px;
   background: rgba(229,62,62,0.15);

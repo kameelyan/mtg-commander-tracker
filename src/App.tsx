@@ -22,6 +22,14 @@ import './App.css'
 export default function App() {
   const [game, setGame] = useState<GameState>(() => createInitialState(4, 40))
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [showHints, setShowHints] = useState(() => {
+    const v = localStorage.getItem('showHints')
+    return v === null ? true : v === 'true'
+  })
+  const toggleHints = useCallback((val: boolean) => {
+    setShowHints(val)
+    localStorage.setItem('showHints', String(val))
+  }, [])
   const [releaseNotesOpen, setReleaseNotesOpen] = useState(false)
   const [confirmingReset, setConfirmingReset] = useState(false)
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -103,6 +111,7 @@ export default function App() {
             onRecolor={recolor}
             onApplyCmdDamage={applyCmd}
             onExtraCounterChange={adjustExtraCounter}
+            showHints={showHints}
           />
         ))}
       </main>
@@ -111,6 +120,8 @@ export default function App() {
         <SettingsModal
           currentPlayerCount={game.playerCount}
           currentStartingLife={game.startingLife}
+          showHints={showHints}
+          onToggleHints={toggleHints}
           onReset={handleReset}
           onClose={() => setSettingsOpen(false)}
         />

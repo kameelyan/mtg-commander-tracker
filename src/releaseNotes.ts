@@ -6,6 +6,14 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.4.0',
+    date: '2026-05-08',
+    changes: [
+      { type: 'change', text: 'Hold repeat interval slowed to 300ms for easier control' },
+      { type: 'new', text: 'Setting to show/hide hold-to-adjust hints (on by default, persisted across sessions)' },
+    ],
+  },
+  {
     version: '1.3.0',
     date: '2026-05-08',
     changes: [

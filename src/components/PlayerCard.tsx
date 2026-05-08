@@ -32,6 +32,7 @@ interface Props {
   onExtraCounterChange: (id: number, counter: CounterType, delta: number) => void
   onRename: (id: number, name: string) => void
   onRecolor: (id: number, color: PlayerColor) => void
+  showHints: boolean
 }
 
 function AdjBtn({
@@ -61,7 +62,7 @@ function AdjBtn({
 
 export default function PlayerCard({
   player, allPlayers, onLifeChange, onPoisonChange,
-  onApplyCmdDamage, onExtraCounterChange, onRename, onRecolor,
+  onApplyCmdDamage, onExtraCounterChange, onRename, onRecolor, showHints,
 }: Props) {
   const [editingName, setEditingName] = useState(false)
   const [nameInput, setNameInput] = useState(player.name)
@@ -130,7 +131,7 @@ export default function PlayerCard({
               )
             })}
           </div>
-          <p className="cmd-panel-note">Tap ±1 · Hold ±10</p>
+          {showHints && <p className="cmd-panel-note">Tap ±1 · Hold ±10</p>}
         </div>
       )}
 
@@ -166,7 +167,7 @@ export default function PlayerCard({
               )
             })}
           </div>
-          <p className="cmd-panel-note">Tap ±1 · Hold ±10</p>
+          {showHints && <p className="cmd-panel-note">Tap ±1 · Hold ±10</p>}
         </div>
       )}
 
@@ -213,7 +214,7 @@ export default function PlayerCard({
         >−</AdjBtn>
         <div className="life-display">
           <span className="life-number">{player.life}</span>
-          <span className="life-hint">tap ±1 · hold ±10</span>
+          {showHints && <span className="life-hint">tap ±1 · hold ±10</span>}
         </div>
         <AdjBtn
           className="life-btn plus"

@@ -8,7 +8,7 @@ interface Options {
 export function useLongPress(
   onTap: () => void,
   onHold: () => void,
-  { delay = 380, repeat = 110 }: Options = {},
+  { delay = 380, repeat = 300 }: Options = {},
 ) {
   // Keep callbacks in refs so intervals always call the latest version
   const onTapRef = useRef(onTap)
