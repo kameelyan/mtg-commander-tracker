@@ -12,12 +12,17 @@ import {
 import PlayerCard from './components/PlayerCard'
 import CommanderDamageModal from './components/CommanderDamageModal'
 import SettingsModal from './components/SettingsModal'
+import HamburgerMenu from './components/HamburgerMenu'
+import ReleaseNotesModal from './components/ReleaseNotesModal'
+import { RELEASE_NOTES } from './releaseNotes'
+import { version } from '../package.json'
 import './App.css'
 
 export default function App() {
   const [game, setGame] = useState<GameState>(() => createInitialState(4, 40))
   const [cmdModal, setCmdModal] = useState<{ victimId: number } | null>(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [releaseNotesOpen, setReleaseNotesOpen] = useState(false)
 
   const adjustLife = useCallback((playerId: number, delta: number) => {
     setGame(g => applyLifeChange(g, playerId, delta))
@@ -53,9 +58,11 @@ export default function App() {
         <span className="app-title">⚔ Commander</span>
         <div className="header-actions">
           {winner && <span className="winner-badge">👑 {winner.name} wins!</span>}
-          <button className="icon-btn" onClick={() => setSettingsOpen(true)} title="Settings">
-            ⚙
-          </button>
+          <HamburgerMenu
+            version={version}
+            onOpenSettings={() => setSettingsOpen(true)}
+            onOpenReleaseNotes={() => setReleaseNotesOpen(true)}
+          />
         </div>
       </header>
 
@@ -89,6 +96,14 @@ export default function App() {
           currentStartingLife={game.startingLife}
           onReset={handleReset}
           onClose={() => setSettingsOpen(false)}
+        />
+      )}
+
+      {releaseNotesOpen && (
+        <ReleaseNotesModal
+          notes={RELEASE_NOTES}
+          currentVersion={version}
+          onClose={() => setReleaseNotesOpen(false)}
         />
       )}
     </div>
