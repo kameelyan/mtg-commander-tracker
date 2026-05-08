@@ -1,13 +1,18 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --mtg-white: #f5f0d8;
-  --mtg-blue: #1a6fa8;
-  --mtg-black: #2a1a3e;
-  --mtg-red: #c0392b;
-  --mtg-green: #1e7a3e;
-  --mtg-gold: #b8860b;
-  --mtg-colorless: #5a5a6a;
+  --color-cobalt:  #1d4ed8;
+  --color-crimson: #dc2626;
+  --color-emerald: #15803d;
+  --color-violet:  #7c3aed;
+  --color-amber:   #b45309;
+  --color-teal:    #0f766e;
+  --color-rose:    #be185d;
+  --color-indigo:  #4338ca;
+  --color-orange:  #c2410c;
+  --color-slate:   #475569;
+  --color-jade:    #065f46;
+  --color-ruby:    #9f1239;
 
   --bg: #0f0f1a;
   --surface: #1a1a2e;

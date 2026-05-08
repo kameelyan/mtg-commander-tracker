@@ -150,19 +150,3 @@
 .players-6 > .player-card:nth-child(2),
 .players-6 > .player-card:nth-child(3)   { transform: rotate(180deg); }
 
-/* ── Color stripe: flip to physical top for rotated players
-   so after 180° rotation the stripe appears at their near/bottom edge ── */
-
-.players-2 > .player-card:nth-child(1)::before,
-.players-3 > .player-card:nth-child(1)::before,
-.players-3 > .player-card:nth-child(2)::before,
-.players-4 > .player-card:nth-child(1)::before,
-.players-4 > .player-card:nth-child(2)::before,
-.players-5 > .player-card:nth-child(1)::before,
-.players-5 > .player-card:nth-child(2)::before,
-.players-6 > .player-card:nth-child(1)::before,
-.players-6 > .player-card:nth-child(2)::before,
-.players-6 > .player-card:nth-child(3)::before {
-  top: 0;
-  bottom: auto;
-}

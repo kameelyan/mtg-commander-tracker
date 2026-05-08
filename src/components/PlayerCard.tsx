@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react'
-import type { Player, MtgColor } from '../types'
+import type { Player, PlayerColor } from '../types'
 import { COMMANDER_DAMAGE_THRESHOLD, POISON_THRESHOLD } from '../gameState'
 import './PlayerCard.css'
 
-const COLORS: MtgColor[] = ['white', 'blue', 'black', 'red', 'green', 'gold', 'colorless']
-const COLOR_LABELS: Record<MtgColor, string> = {
-  white: 'W', blue: 'U', black: 'B', red: 'R', green: 'G', gold: 'M', colorless: 'C',
-}
+const PALETTE: PlayerColor[] = [
+  'cobalt', 'crimson', 'emerald', 'violet',
+  'amber', 'teal', 'rose', 'indigo',
+  'orange', 'slate', 'jade', 'ruby',
+]
 
 interface Props {
   player: Player
@@ -14,7 +15,7 @@ interface Props {
   onLifeChange: (id: number, delta: number) => void
   onPoisonChange: (id: number, delta: number) => void
   onRename: (id: number, name: string) => void
-  onRecolor: (id: number, color: MtgColor) => void
+  onRecolor: (id: number, color: PlayerColor) => void
   onOpenCmdDamage: () => void
 }
 
@@ -23,8 +24,9 @@ export default function PlayerCard({
 }: Props) {
   const [editingName, setEditingName] = useState(false)
   const [nameInput, setNameInput] = useState(player.name)
-  const [showColors, setShowColors] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
+
+  const startEdit = () => { setEditingName(true); setNameInput(player.name) }
 
   const commitName = () => {
     const trimmed = nameInput.trim()
@@ -41,12 +43,6 @@ export default function PlayerCard({
 
       {/* Name row */}
       <div className="name-row">
-        <button
-          className="color-dot"
-          style={{ background: `var(--mtg-${player.color})` }}
-          onClick={() => setShowColors(v => !v)}
-          title="Change color"
-        />
         {editingName ? (
           <input
             ref={nameRef}
@@ -58,27 +54,27 @@ export default function PlayerCard({
             autoFocus
           />
         ) : (
-          <span className="player-name" onClick={() => { setEditingName(true); setNameInput(player.name) }}>
-            {player.name}
-          </span>
-        )}
-
-        {showColors && (
-          <div className="color-picker">
-            {COLORS.map(c => (
-              <button
-                key={c}
-                className={`color-chip ${player.color === c ? 'active' : ''}`}
-                style={{ background: `var(--mtg-${c})` }}
-                title={c}
-                onClick={() => { onRecolor(player.id, c); setShowColors(false) }}
-              >
-                {COLOR_LABELS[c]}
-              </button>
-            ))}
-          </div>
+          <span className="player-name" onClick={startEdit}>{player.name}</span>
         )}
       </div>
+
+      {/* Color picker — visible only while editing name */}
+      {editingName && (
+        <div className="color-picker">
+          {PALETTE.map(c => (
+            <button
+              key={c}
+              className={`color-chip ${player.color === c ? 'active' : ''}`}
+              style={{ background: `var(--color-${c})` }}
+              title={c}
+              onMouseDown={e => {
+                e.preventDefault() // prevent blur on the name input
+                onRecolor(player.id, c)
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Life total */}
       <div className="life-section">
@@ -100,7 +96,6 @@ export default function PlayerCard({
 
       {/* Status row */}
       <div className="status-row">
-        {/* Poison */}
         <div className="counter-group">
           <button className="counter-btn" onClick={() => onPoisonChange(player.id, -1)}>−</button>
           <div className={`counter-display ${player.poison >= POISON_THRESHOLD ? 'danger' : ''}`}>
@@ -110,7 +105,6 @@ export default function PlayerCard({
           <button className="counter-btn" onClick={() => onPoisonChange(player.id, 1)}>+</button>
         </div>
 
-        {/* Commander damage summary */}
         <button
           className={`cmd-summary-btn ${totalCmdDamage >= COMMANDER_DAMAGE_THRESHOLD ? 'danger' : ''}`}
           onClick={onOpenCmdDamage}
@@ -121,7 +115,7 @@ export default function PlayerCard({
         </button>
       </div>
 
-      {/* Commander damage breakdown */}
+      {/* Commander damage breakdown chips */}
       {Object.entries(player.commanderDamage).some(([, v]) => v > 0) && (
         <div className="cmd-breakdown">
           {Object.entries(player.commanderDamage).map(([attackerId, dmg]) => {
@@ -131,7 +125,6 @@ export default function PlayerCard({
               <span
                 key={attackerId}
                 className={`cmd-chip ${dmg >= COMMANDER_DAMAGE_THRESHOLD ? 'danger' : ''}`}
-                style={{ background: `var(--mtg-${attacker?.color ?? 'colorless'})` }}
               >
                 {attacker?.name.slice(0, 3) ?? '?'}: {dmg}
               </span>

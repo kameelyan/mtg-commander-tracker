@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
-import type { GameState, MtgColor } from './types'
+import type { GameState, PlayerColor } from './types'
 import {
   createInitialState,
   applyLifeChange,
@@ -42,7 +42,7 @@ export default function App() {
     setGame(g => renamePlayer(g, playerId, name))
   }, [])
 
-  const recolor = useCallback((playerId: number, color: MtgColor) => {
+  const recolor = useCallback((playerId: number, color: PlayerColor) => {
     setGame(g => setPlayerColor(g, playerId, color))
   }, [])
 

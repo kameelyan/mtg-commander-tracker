@@ -30,7 +30,7 @@ export default function CommanderDamageModal({ victim, attackers, onApply, onClo
               >
                 <div
                   className="attacker-color-bar"
-                  style={{ background: `var(--mtg-${attacker.color})` }}
+                  style={{ background: `var(--color-${attacker.color})` }}
                 />
                 <span className="attacker-name">{attacker.name}</span>
                 <div className="cmd-controls">

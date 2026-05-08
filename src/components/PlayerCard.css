@@ -4,31 +4,37 @@
   flex-direction: column;
   gap: 6px;
   padding: 10px;
-  background: var(--surface);
   border-radius: 6px;
   overflow: hidden;
   transition: opacity 0.3s;
+  color: #fff;
 }
 
-/* Color accent stripe — horizontal at bottom (player's near edge).
-   Rotated top-row players get it at physical top via App.css,
-   which after 180° rotation also appears at their near edge. */
+/* Vibrant background colors */
+.player-card.color-cobalt  { background: var(--color-cobalt); }
+.player-card.color-crimson { background: var(--color-crimson); }
+.player-card.color-emerald { background: var(--color-emerald); }
+.player-card.color-violet  { background: var(--color-violet); }
+.player-card.color-amber   { background: var(--color-amber); }
+.player-card.color-teal    { background: var(--color-teal); }
+.player-card.color-rose    { background: var(--color-rose); }
+.player-card.color-indigo  { background: var(--color-indigo); }
+.player-card.color-orange  { background: var(--color-orange); }
+.player-card.color-slate   { background: var(--color-slate); }
+.player-card.color-jade    { background: var(--color-jade); }
+.player-card.color-ruby    { background: var(--color-ruby); }
+
+/* Subtle inner highlight at top edge */
 .player-card::before {
   content: '';
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 4px;
+  background: rgba(255,255,255,0.15);
 }
-.player-card.color-white::before  { background: var(--mtg-white); }
-.player-card.color-blue::before   { background: var(--mtg-blue); }
-.player-card.color-black::before  { background: var(--mtg-black); }
-.player-card.color-red::before    { background: var(--mtg-red); }
-.player-card.color-green::before  { background: var(--mtg-green); }
-.player-card.color-gold::before   { background: var(--mtg-gold); }
-.player-card.color-colorless::before { background: var(--mtg-colorless); }
 
 .player-card.eliminated {
-  opacity: 0.45;
+  opacity: 0.4;
   pointer-events: none;
 }
 
@@ -39,77 +45,63 @@
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.45);
   z-index: 10;
   pointer-events: none;
 }
 
-/* Name row */
+/* Name row — no dot, just name */
 .name-row {
   display: flex;
   align-items: center;
   gap: 6px;
   position: relative;
 }
-.color-dot {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  border: 2px solid rgba(255,255,255,0.25);
-  padding: 0;
-}
 .player-name {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 1;
+  opacity: 0.9;
+  letter-spacing: 0.02em;
 }
-.player-name:hover { color: #c9a84c; }
+.player-name:hover { opacity: 1; }
+
 .name-input {
   flex: 1;
-  background: var(--surface2);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.4);
   border-radius: 4px;
-  color: var(--text);
+  color: #fff;
   font-size: 0.9rem;
+  font-weight: 700;
   padding: 2px 6px;
   outline: none;
 }
-.name-input:focus { border-color: #c9a84c; }
+.name-input:focus { border-color: rgba(255,255,255,0.8); }
+.name-input::placeholder { color: rgba(255,255,255,0.4); }
 
+/* Color picker — shown below name input when editing */
 .color-picker {
-  position: absolute;
-  top: 22px;
-  left: 0;
   display: flex;
-  gap: 4px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 5px;
-  z-index: 20;
   flex-wrap: wrap;
-  max-width: 180px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  gap: 5px;
+  padding: 6px 0 2px;
 }
 .color-chip {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
   border: 2px solid transparent;
   padding: 0;
-  transition: transform 0.1s;
+  transition: transform 0.12s, border-color 0.12s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
-.color-chip:hover { transform: scale(1.15); }
-.color-chip.active { border-color: #fff; }
+.color-chip:hover  { transform: scale(1.18); }
+.color-chip.active { border-color: #fff; transform: scale(1.12); }
 
 /* Life section */
 .life-section {
@@ -124,20 +116,23 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--surface2);
+  background: rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 0.1s, transform 0.1s;
   flex-shrink: 0;
+  color: #fff;
 }
-.life-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.2); }
+.life-btn:active { transform: scale(0.9); background: rgba(0,0,0,0.35); }
+
 .life-display { text-align: center; min-width: 64px; }
 .life-number {
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 800;
   line-height: 1;
   display: block;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 /* Quick buttons */
@@ -148,14 +143,15 @@
 .quick-btn {
   flex: 1;
   padding: 4px 0;
-  background: var(--surface2);
+  background: rgba(0,0,0,0.2);
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 600;
   text-align: center;
+  color: #fff;
   transition: background 0.1s, transform 0.1s;
 }
-.quick-btn:active { transform: scale(0.95); background: rgba(255,255,255,0.2); }
+.quick-btn:active { transform: scale(0.95); background: rgba(0,0,0,0.35); }
 
 /* Status row */
 .status-row {
@@ -173,45 +169,49 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--surface2);
+  background: rgba(0,0,0,0.2);
   font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
   transition: background 0.1s;
 }
-.counter-btn:active { background: rgba(255,255,255,0.2); }
+.counter-btn:active { background: rgba(0,0,0,0.35); }
+
 .counter-display {
   display: flex;
   align-items: center;
   gap: 3px;
   padding: 3px 7px;
-  background: var(--surface2);
+  background: rgba(0,0,0,0.2);
   border-radius: 12px;
   font-size: 0.85rem;
   border: 1px solid transparent;
 }
-.counter-display.danger, .cmd-summary-btn.danger {
-  border-color: var(--danger);
-  color: var(--danger);
-  box-shadow: 0 0 6px var(--danger-glow);
+.counter-display.danger,
+.cmd-summary-btn.danger {
+  border-color: rgba(255,255,255,0.8);
+  background: rgba(0,0,0,0.4);
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
 }
 .counter-icon { font-size: 0.8rem; }
-.counter-val { font-weight: 700; }
+.counter-val  { font-weight: 700; }
 
 .cmd-summary-btn {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 4px 10px;
-  background: var(--surface2);
+  background: rgba(0,0,0,0.2);
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 700;
   border: 1px solid transparent;
+  color: #fff;
   transition: background 0.1s;
 }
-.cmd-summary-btn:active { background: rgba(255,255,255,0.15); }
+.cmd-summary-btn:active { background: rgba(0,0,0,0.35); }
 
 /* Commander damage breakdown chips */
 .cmd-breakdown {
@@ -225,10 +225,11 @@
   padding: 2px 6px;
   border-radius: 8px;
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-  border: 1px solid transparent;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.25);
 }
 .cmd-chip.danger {
-  border-color: var(--danger);
-  box-shadow: 0 0 4px var(--danger-glow);
+  border-color: #fff;
+  background: rgba(0,0,0,0.45);
 }

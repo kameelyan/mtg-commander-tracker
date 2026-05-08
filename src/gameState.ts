@@ -1,6 +1,6 @@
-import type { GameState, MtgColor, Player } from './types'
+import type { GameState, PlayerColor, Player } from './types'
 
-const COLORS: MtgColor[] = ['white', 'blue', 'black', 'red', 'green', 'gold', 'colorless']
+const COLORS: PlayerColor[] = ['cobalt', 'crimson', 'emerald', 'violet', 'amber', 'teal', 'rose', 'indigo', 'orange', 'slate', 'jade', 'ruby']
 const DEFAULT_NAMES = ['Aragorn', 'Breya', 'Chandra', 'Dimir', 'Edgar', 'Freyalise']
 
 export const COMMANDER_DAMAGE_THRESHOLD = 21
@@ -95,7 +95,7 @@ export function renamePlayer(state: GameState, playerId: number, name: string): 
   }
 }
 
-export function setPlayerColor(state: GameState, playerId: number, color: MtgColor): GameState {
+export function setPlayerColor(state: GameState, playerId: number, color: PlayerColor): GameState {
   return {
     ...state,
     players: state.players.map(p => (p.id === playerId ? { ...p, color } : p)),
