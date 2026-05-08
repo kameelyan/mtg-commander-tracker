@@ -1,0 +1,47 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --mtg-white: #f5f0d8;
+  --mtg-blue: #1a6fa8;
+  --mtg-black: #2a1a3e;
+  --mtg-red: #c0392b;
+  --mtg-green: #1e7a3e;
+  --mtg-gold: #b8860b;
+  --mtg-colorless: #5a5a6a;
+
+  --bg: #0f0f1a;
+  --surface: #1a1a2e;
+  --surface2: #22223a;
+  --border: rgba(255,255,255,0.10);
+  --text: #e8e8f0;
+  --text-muted: #8888aa;
+  --danger: #e53e3e;
+  --danger-glow: rgba(229, 62, 62, 0.4);
+
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body { margin: 0; overflow-x: hidden; }
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}

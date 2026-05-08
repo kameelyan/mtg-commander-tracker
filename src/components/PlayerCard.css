@@ -1,0 +1,233 @@
+.player-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  background: var(--surface);
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 180px;
+  transition: opacity 0.3s;
+}
+
+/* Color accent stripe on left edge */
+.player-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+}
+.player-card.color-white::before  { background: var(--mtg-white); }
+.player-card.color-blue::before   { background: var(--mtg-blue); }
+.player-card.color-black::before  { background: var(--mtg-black); }
+.player-card.color-red::before    { background: var(--mtg-red); }
+.player-card.color-green::before  { background: var(--mtg-green); }
+.player-card.color-gold::before   { background: var(--mtg-gold); }
+.player-card.color-colorless::before { background: var(--mtg-colorless); }
+
+.player-card.eliminated {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.skull-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background: rgba(0,0,0,0.5);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Name row */
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+.color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.25);
+  padding: 0;
+}
+.player-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+.player-name:hover { color: #c9a84c; }
+.name-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 0.9rem;
+  padding: 2px 6px;
+  outline: none;
+}
+.name-input:focus { border-color: #c9a84c; }
+
+.color-picker {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  display: flex;
+  gap: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px;
+  z-index: 20;
+  flex-wrap: wrap;
+  max-width: 180px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.color-chip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  border: 2px solid transparent;
+  padding: 0;
+  transition: transform 0.1s;
+}
+.color-chip:hover { transform: scale(1.15); }
+.color-chip.active { border-color: #fff; }
+
+/* Life section */
+.life-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+}
+.life-btn {
+  font-size: 1.8rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, transform 0.1s;
+  flex-shrink: 0;
+}
+.life-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.2); }
+.life-display { text-align: center; min-width: 64px; }
+.life-number {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  display: block;
+}
+
+/* Quick buttons */
+.quick-btns {
+  display: flex;
+  gap: 4px;
+}
+.quick-btn {
+  flex: 1;
+  padding: 4px 0;
+  background: var(--surface2);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.1s, transform 0.1s;
+}
+.quick-btn:active { transform: scale(0.95); background: rgba(255,255,255,0.2); }
+
+/* Status row */
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.counter-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.counter-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface2);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s;
+}
+.counter-btn:active { background: rgba(255,255,255,0.2); }
+.counter-display {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 7px;
+  background: var(--surface2);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+}
+.counter-display.danger, .cmd-summary-btn.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+  box-shadow: 0 0 6px var(--danger-glow);
+}
+.counter-icon { font-size: 0.8rem; }
+.counter-val { font-weight: 700; }
+
+.cmd-summary-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--surface2);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition: background 0.1s;
+}
+.cmd-summary-btn:active { background: rgba(255,255,255,0.15); }
+
+/* Commander damage breakdown chips */
+.cmd-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.cmd-chip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  border: 1px solid transparent;
+}
+.cmd-chip.danger {
+  border-color: var(--danger);
+  box-shadow: 0 0 4px var(--danger-glow);
+}

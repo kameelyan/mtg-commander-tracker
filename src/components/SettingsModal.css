@@ -1,0 +1,87 @@
+.settings-panel {
+  gap: 16px;
+}
+
+.setting-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.setting-row label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.player-count-btns,
+.life-select-btns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.count-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: var(--surface2);
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid transparent;
+  transition: background 0.1s, border-color 0.1s;
+}
+.count-btn:hover { background: rgba(255,255,255,0.15); }
+.count-btn.active { border-color: #c9a84c; color: #c9a84c; }
+
+.life-input {
+  width: 70px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  padding: 5px 8px;
+  outline: none;
+  text-align: center;
+}
+.life-input:focus { border-color: #c9a84c; }
+
+.reset-btn {
+  padding: 10px;
+  background: rgba(229,62,62,0.15);
+  border: 2px solid rgba(229,62,62,0.4);
+  border-radius: 10px;
+  color: #fc8181;
+  font-size: 1rem;
+  font-weight: 700;
+  width: 100%;
+  transition: background 0.1s;
+}
+.reset-btn:hover { background: rgba(229,62,62,0.25); }
+
+.confirm-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.confirm-row span {
+  font-size: 0.9rem;
+  flex: 1;
+}
+.confirm-yes {
+  padding: 8px 14px;
+  background: var(--danger);
+  border-radius: 8px;
+  font-weight: 700;
+  color: #fff;
+}
+.confirm-yes:hover { background: #c53030; }
+.confirm-no {
+  padding: 8px 14px;
+  background: var(--surface2);
+  border-radius: 8px;
+  font-weight: 600;
+}
+.confirm-no:hover { background: rgba(255,255,255,0.15); }
