@@ -7,16 +7,17 @@
   background: var(--surface);
   border-radius: 6px;
   overflow: hidden;
-  min-height: 180px;
   transition: opacity 0.3s;
 }
 
-/* Color accent stripe on left edge */
+/* Color accent stripe — horizontal at bottom (player's near edge).
+   Rotated top-row players get it at physical top via App.css,
+   which after 180° rotation also appears at their near edge. */
 .player-card::before {
   content: '';
   position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 4px;
+  left: 0; right: 0; bottom: 0;
+  height: 4px;
 }
 .player-card.color-white::before  { background: var(--mtg-white); }
 .player-card.color-blue::before   { background: var(--mtg-blue); }
