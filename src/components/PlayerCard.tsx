@@ -14,16 +14,17 @@ interface Props {
   allPlayers: Player[]
   onLifeChange: (id: number, delta: number) => void
   onPoisonChange: (id: number, delta: number) => void
+  onApplyCmdDamage: (victimId: number, attackerId: number, delta: number) => void
   onRename: (id: number, name: string) => void
   onRecolor: (id: number, color: PlayerColor) => void
-  onOpenCmdDamage: () => void
 }
 
 export default function PlayerCard({
-  player, allPlayers, onLifeChange, onPoisonChange, onRename, onRecolor, onOpenCmdDamage,
+  player, allPlayers, onLifeChange, onPoisonChange, onApplyCmdDamage, onRename, onRecolor,
 }: Props) {
   const [editingName, setEditingName] = useState(false)
   const [nameInput, setNameInput] = useState(player.name)
+  const [cmdOpen, setCmdOpen] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
 
   const startEdit = () => { setEditingName(true); setNameInput(player.name) }
@@ -35,11 +36,58 @@ export default function PlayerCard({
     setEditingName(false)
   }
 
+  const attackers = allPlayers.filter(p => p.id !== player.id)
   const totalCmdDamage = Object.values(player.commanderDamage).reduce((a, b) => a + b, 0)
 
   return (
     <div className={`player-card color-${player.color} ${player.eliminated ? 'eliminated' : ''}`}>
       {player.eliminated && <div className="skull-overlay">💀</div>}
+
+      {/* Commander damage panel — inline overlay, inherits quadrant rotation */}
+      {cmdOpen && (
+        <div className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="cmd-panel-title">⚔ Damage taken</span>
+            <button className="cmd-panel-close" onClick={() => setCmdOpen(false)}>✕</button>
+          </div>
+          <div className="cmd-panel-rows">
+            {attackers.map(attacker => {
+              const dmg = player.commanderDamage[attacker.id] ?? 0
+              const pct = Math.min(dmg / COMMANDER_DAMAGE_THRESHOLD, 1)
+              const atLimit = dmg >= COMMANDER_DAMAGE_THRESHOLD
+              return (
+                <div key={attacker.id} className="cmd-panel-row">
+                  <div className="cmd-row-top">
+                    <span className="cmd-row-name">{attacker.name}</span>
+                    <div className="cmd-row-controls">
+                      <button
+                        className="cmd-adj-btn"
+                        onClick={() => onApplyCmdDamage(player.id, attacker.id, -1)}
+                        disabled={dmg === 0}
+                      >−</button>
+                      <span className={`cmd-row-val ${atLimit ? 'at-limit' : ''}`}>{dmg}</span>
+                      <button
+                        className="cmd-adj-btn"
+                        onClick={() => onApplyCmdDamage(player.id, attacker.id, 1)}
+                      >+</button>
+                    </div>
+                  </div>
+                  <div className="cmd-progress-track">
+                    <div
+                      className={`cmd-progress-fill ${atLimit ? 'at-limit' : ''}`}
+                      style={{
+                        width: `${pct * 100}%`,
+                        background: `var(--color-${attacker.color})`,
+                      }}
+                    />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <p className="cmd-panel-note">Damage also reduces life total</p>
+        </div>
+      )}
 
       {/* Name row */}
       <div className="name-row">
@@ -58,7 +106,6 @@ export default function PlayerCard({
         )}
       </div>
 
-      {/* Color picker — visible only while editing name */}
       {editingName && (
         <div className="color-picker">
           {PALETTE.map(c => (
@@ -68,7 +115,7 @@ export default function PlayerCard({
               style={{ background: `var(--color-${c})` }}
               title={c}
               onMouseDown={e => {
-                e.preventDefault() // prevent blur on the name input
+                e.preventDefault()
                 onRecolor(player.id, c)
               }}
             />
@@ -107,16 +154,14 @@ export default function PlayerCard({
 
         <button
           className={`cmd-summary-btn ${totalCmdDamage >= COMMANDER_DAMAGE_THRESHOLD ? 'danger' : ''}`}
-          onClick={onOpenCmdDamage}
-          title="Commander damage"
+          onClick={() => setCmdOpen(v => !v)}
         >
           <span className="counter-icon">⚔</span>
           <span className="counter-val">{totalCmdDamage}</span>
         </button>
       </div>
 
-      {/* Commander damage breakdown chips */}
-      {Object.entries(player.commanderDamage).some(([, v]) => v > 0) && (
+      {Object.entries(player.commanderDamage).some(([, v]) => v > 0) && !cmdOpen && (
         <div className="cmd-breakdown">
           {Object.entries(player.commanderDamage).map(([attackerId, dmg]) => {
             if (dmg === 0) return null

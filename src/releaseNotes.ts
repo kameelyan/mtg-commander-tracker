@@ -6,6 +6,14 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.1.0',
+    date: '2026-05-08',
+    changes: [
+      { type: 'new', text: 'Inline commander damage panel per quadrant — all players can manage simultaneously' },
+      { type: 'change', text: 'MTG mana-inspired color palette: Island blue, Mountain red, Forest green, Swamp purple, Plains gold, and more' },
+    ],
+  },
+  {
     version: '1.0.0',
     date: '2026-05-08',
     changes: [

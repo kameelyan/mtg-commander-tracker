@@ -1,18 +1,19 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --color-cobalt:  #1d4ed8;
-  --color-crimson: #dc2626;
-  --color-emerald: #15803d;
-  --color-violet:  #7c3aed;
-  --color-amber:   #b45309;
-  --color-teal:    #0f766e;
-  --color-rose:    #be185d;
-  --color-indigo:  #4338ca;
-  --color-orange:  #c2410c;
-  --color-slate:   #475569;
-  --color-jade:    #065f46;
-  --color-ruby:    #9f1239;
+  /* MTG mana-inspired jewel tones */
+  --color-cobalt:  #1468C2;  /* Island blue */
+  --color-crimson: #C8181A;  /* Mountain red */
+  --color-emerald: #1A7A32;  /* Forest green */
+  --color-violet:  #5E1E9C;  /* Swamp purple */
+  --color-amber:   #C09220;  /* Plains gold */
+  --color-teal:    #0A7878;  /* Simic teal */
+  --color-rose:    #B01A60;  /* Orzhov rose */
+  --color-indigo:  #2C1EA0;  /* Dimir indigo */
+  --color-orange:  #C84A10;  /* Gruul orange */
+  --color-slate:   #4A4A6A;  /* Colorless */
+  --color-jade:    #0A6438;  /* Deep jade */
+  --color-ruby:    #960E1A;  /* Deep ruby */
 
   --bg: #0f0f1a;
   --surface: #1a1a2e;

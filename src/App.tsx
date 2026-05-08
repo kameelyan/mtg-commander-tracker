@@ -10,7 +10,6 @@ import {
   resetGame,
 } from './gameState'
 import PlayerCard from './components/PlayerCard'
-import CommanderDamageModal from './components/CommanderDamageModal'
 import SettingsModal from './components/SettingsModal'
 import HamburgerMenu from './components/HamburgerMenu'
 import ReleaseNotesModal from './components/ReleaseNotesModal'
@@ -20,7 +19,6 @@ import './App.css'
 
 export default function App() {
   const [game, setGame] = useState<GameState>(() => createInitialState(4, 40))
-  const [cmdModal, setCmdModal] = useState<{ victimId: number } | null>(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [releaseNotesOpen, setReleaseNotesOpen] = useState(false)
   const [confirmingReset, setConfirmingReset] = useState(false)
@@ -97,19 +95,10 @@ export default function App() {
             onPoisonChange={adjustPoison}
             onRename={rename}
             onRecolor={recolor}
-            onOpenCmdDamage={() => setCmdModal({ victimId: player.id })}
+            onApplyCmdDamage={applyCmd}
           />
         ))}
       </main>
-
-      {cmdModal && (
-        <CommanderDamageModal
-          victim={game.players.find(p => p.id === cmdModal.victimId)!}
-          attackers={game.players.filter(p => p.id !== cmdModal.victimId)}
-          onApply={applyCmd}
-          onClose={() => setCmdModal(null)}
-        />
-      )}
 
       {settingsOpen && (
         <SettingsModal

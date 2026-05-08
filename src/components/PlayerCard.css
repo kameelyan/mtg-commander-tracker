@@ -213,6 +213,122 @@
 }
 .cmd-summary-btn:active { background: rgba(0,0,0,0.35); }
 
+/* ── Inline commander damage panel ── */
+.cmd-panel {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  border-radius: 6px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.cmd-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cmd-panel-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+.cmd-panel-close {
+  font-size: 0.9rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.1s;
+}
+.cmd-panel-close:active { background: rgba(255,255,255,0.25); }
+
+.cmd-panel-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.cmd-panel-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.cmd-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cmd-row-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.85;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmd-row-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cmd-adj-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.1s;
+  flex-shrink: 0;
+}
+.cmd-adj-btn:active  { background: rgba(255,255,255,0.25); }
+.cmd-adj-btn:disabled { opacity: 0.3; pointer-events: none; }
+
+.cmd-row-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  min-width: 24px;
+  text-align: center;
+}
+.cmd-row-val.at-limit { color: #fc8181; }
+
+.cmd-progress-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.15);
+  overflow: hidden;
+}
+.cmd-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.2s ease;
+}
+.cmd-progress-fill.at-limit { filter: brightness(1.4); }
+
+.cmd-panel-note {
+  margin: 0;
+  font-size: 0.65rem;
+  opacity: 0.45;
+  text-align: center;
+}
+
 /* Commander damage breakdown chips */
 .cmd-breakdown {
   display: flex;
