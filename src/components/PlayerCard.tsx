@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import type { Player, PlayerColor } from '../types'
+import type { Player, PlayerColor, CounterType } from '../types'
 import { COMMANDER_DAMAGE_THRESHOLD, POISON_THRESHOLD } from '../gameState'
 import './PlayerCard.css'
 
@@ -9,22 +9,38 @@ const PALETTE: PlayerColor[] = [
   'orange', 'slate', 'jade', 'ruby',
 ]
 
+const COUNTER_DEFS: { key: CounterType; label: string; icon: string }[] = [
+  { key: 'energy',     label: 'Energy',     icon: '⚡' },
+  { key: 'experience', label: 'Experience', icon: '⭐' },
+  { key: 'rad',        label: 'Rad',        icon: '☢' },
+  { key: 'charge',     label: 'Charge',     icon: '⚙' },
+  { key: 'lore',       label: 'Lore',       icon: '📜' },
+  { key: 'spore',      label: 'Spore',      icon: '🍄' },
+  { key: 'level',      label: 'Level',      icon: '↑' },
+  { key: 'loyalty',    label: 'Loyalty',    icon: '◆' },
+  { key: 'time',       label: 'Time',       icon: '⏳' },
+  { key: 'bounty',     label: 'Bounty',     icon: '💰' },
+]
+
 interface Props {
   player: Player
   allPlayers: Player[]
   onLifeChange: (id: number, delta: number) => void
   onPoisonChange: (id: number, delta: number) => void
   onApplyCmdDamage: (victimId: number, attackerId: number, delta: number) => void
+  onExtraCounterChange: (id: number, counter: CounterType, delta: number) => void
   onRename: (id: number, name: string) => void
   onRecolor: (id: number, color: PlayerColor) => void
 }
 
 export default function PlayerCard({
-  player, allPlayers, onLifeChange, onPoisonChange, onApplyCmdDamage, onRename, onRecolor,
+  player, allPlayers, onLifeChange, onPoisonChange,
+  onApplyCmdDamage, onExtraCounterChange, onRename, onRecolor,
 }: Props) {
   const [editingName, setEditingName] = useState(false)
   const [nameInput, setNameInput] = useState(player.name)
   const [cmdOpen, setCmdOpen] = useState(false)
+  const [countersOpen, setCountersOpen] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
 
   const startEdit = () => { setEditingName(true); setNameInput(player.name) }
@@ -38,12 +54,13 @@ export default function PlayerCard({
 
   const attackers = allPlayers.filter(p => p.id !== player.id)
   const totalCmdDamage = Object.values(player.commanderDamage).reduce((a, b) => a + b, 0)
+  const activeCounters = COUNTER_DEFS.filter(c => (player.extraCounters[c.key] ?? 0) > 0)
 
   return (
     <div className={`player-card color-${player.color} ${player.eliminated ? 'eliminated' : ''}`}>
       {player.eliminated && <div className="skull-overlay">💀</div>}
 
-      {/* Commander damage panel — inline overlay, inherits quadrant rotation */}
+      {/* Commander damage panel */}
       {cmdOpen && (
         <div className="cmd-panel">
           <div className="cmd-panel-header">
@@ -86,6 +103,39 @@ export default function PlayerCard({
             })}
           </div>
           <p className="cmd-panel-note">Damage also reduces life total</p>
+        </div>
+      )}
+
+      {/* Extra counters panel */}
+      {countersOpen && (
+        <div className="counters-panel">
+          <div className="counters-panel-header">
+            <span className="counters-panel-title">Counters</span>
+            <button className="cmd-panel-close" onClick={() => setCountersOpen(false)}>✕</button>
+          </div>
+          <div className="counters-panel-rows">
+            {COUNTER_DEFS.map(({ key, label, icon }) => {
+              const val = player.extraCounters[key] ?? 0
+              return (
+                <div key={key} className="counter-def-row">
+                  <span className="counter-def-icon">{icon}</span>
+                  <span className="counter-def-label">{label}</span>
+                  <div className="counter-def-controls">
+                    <button
+                      className="cmd-adj-btn"
+                      onClick={() => onExtraCounterChange(player.id, key, -1)}
+                      disabled={val === 0}
+                    >−</button>
+                    <span className="counter-def-val">{val}</span>
+                    <button
+                      className="cmd-adj-btn"
+                      onClick={() => onExtraCounterChange(player.id, key, 1)}
+                    >+</button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
 
@@ -154,7 +204,7 @@ export default function PlayerCard({
 
         <button
           className={`cmd-summary-btn ${totalCmdDamage >= COMMANDER_DAMAGE_THRESHOLD ? 'danger' : ''}`}
-          onClick={() => setCmdOpen(v => !v)}
+          onClick={() => { setCmdOpen(v => !v); setCountersOpen(false) }}
         >
           <span className="counter-icon">⚔</span>
           <span className="counter-val">{totalCmdDamage}</span>
@@ -177,6 +227,26 @@ export default function PlayerCard({
           })}
         </div>
       )}
+
+      {/* Active extra counter chips */}
+      {activeCounters.length > 0 && !countersOpen && (
+        <div className="extra-counter-chips">
+          {activeCounters.map(({ key, icon }) => (
+            <span key={key} className="extra-chip">
+              {icon} {player.extraCounters[key]}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Counters toggle — opposite end from the name */}
+      <button
+        className={`counters-toggle-btn ${countersOpen ? 'active' : ''}`}
+        onClick={() => { setCountersOpen(v => !v); setCmdOpen(false) }}
+      >
+        <span className="counters-toggle-icons">⚡⭐☢</span>
+        <span>{countersOpen ? 'Close' : 'Counters'}</span>
+      </button>
     </div>
   )
 }

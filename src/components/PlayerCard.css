@@ -349,3 +349,119 @@
   border-color: #fff;
   background: rgba(0,0,0,0.45);
 }
+
+/* ── Extra counter chips (shown when panel is closed) ── */
+.extra-counter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.extra-chip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+}
+
+/* ── Counters toggle button — bottom of card, opposite the name ── */
+.counters-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  padding: 5px 0;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  transition: background 0.1s, color 0.1s;
+  letter-spacing: 0.03em;
+}
+.counters-toggle-btn:active { background: rgba(0,0,0,0.3); }
+.counters-toggle-btn.active {
+  background: rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.3);
+  color: #fff;
+}
+.counters-toggle-icons {
+  font-size: 0.65rem;
+  letter-spacing: -0.05em;
+  opacity: 0.8;
+}
+
+/* ── Inline extra counters panel ── */
+.counters-panel {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.90);
+  border-radius: 6px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.counters-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.counters-panel-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.counters-panel-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.counter-def-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 2px;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+.counter-def-row:hover { background: rgba(255,255,255,0.05); }
+
+.counter-def-icon {
+  font-size: 0.9rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.counter-def-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.8;
+  flex: 1;
+}
+.counter-def-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.counter-def-val {
+  font-size: 0.9rem;
+  font-weight: 800;
+  min-width: 22px;
+  text-align: center;
+}

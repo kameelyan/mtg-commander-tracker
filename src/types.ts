@@ -12,14 +12,19 @@ export type PlayerColor =
   | 'jade'      // deep jade
   | 'ruby'      // deep ruby
 
+export type CounterType =
+  | 'energy' | 'experience' | 'rad' | 'charge'
+  | 'lore' | 'spore' | 'level' | 'loyalty'
+  | 'time' | 'bounty'
+
 export interface Player {
   id: number
   name: string
   life: number
   poison: number
   color: PlayerColor
-  // commanderDamage[attackerId] = damage taken from that commander
   commanderDamage: Record<number, number>
+  extraCounters: Partial<Record<CounterType, number>>
   eliminated: boolean
 }
 

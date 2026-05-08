@@ -5,10 +5,12 @@ import {
   applyLifeChange,
   applyCommanderDamage,
   applyPoisonChange,
+  applyExtraCounter,
   renamePlayer,
   setPlayerColor,
   resetGame,
 } from './gameState'
+import type { CounterType } from './types'
 import PlayerCard from './components/PlayerCard'
 import SettingsModal from './components/SettingsModal'
 import HamburgerMenu from './components/HamburgerMenu'
@@ -42,6 +44,10 @@ export default function App() {
 
   const recolor = useCallback((playerId: number, color: PlayerColor) => {
     setGame(g => setPlayerColor(g, playerId, color))
+  }, [])
+
+  const adjustExtraCounter = useCallback((playerId: number, counter: CounterType, delta: number) => {
+    setGame(g => applyExtraCounter(g, playerId, counter, delta))
   }, [])
 
   const handleReset = useCallback((playerCount: number, startingLife: number) => {
@@ -96,6 +102,7 @@ export default function App() {
             onRename={rename}
             onRecolor={recolor}
             onApplyCmdDamage={applyCmd}
+            onExtraCounterChange={adjustExtraCounter}
           />
         ))}
       </main>

@@ -1,4 +1,4 @@
-import type { GameState, PlayerColor, Player } from './types'
+import type { GameState, PlayerColor, Player, CounterType } from './types'
 
 const COLORS: PlayerColor[] = ['cobalt', 'crimson', 'emerald', 'violet', 'amber', 'teal', 'rose', 'indigo', 'orange', 'slate', 'jade', 'ruby']
 const DEFAULT_NAMES = ['Aragorn', 'Breya', 'Chandra', 'Dimir', 'Edgar', 'Freyalise']
@@ -18,6 +18,7 @@ export function createPlayer(id: number, playerCount: number, startingLife: numb
     poison: 0,
     color: COLORS[id % COLORS.length],
     commanderDamage,
+    extraCounters: {},
     eliminated: false,
   }
 }
@@ -99,6 +100,23 @@ export function setPlayerColor(state: GameState, playerId: number, color: Player
   return {
     ...state,
     players: state.players.map(p => (p.id === playerId ? { ...p, color } : p)),
+  }
+}
+
+export function applyExtraCounter(
+  state: GameState,
+  playerId: number,
+  counter: CounterType,
+  delta: number,
+): GameState {
+  return {
+    ...state,
+    players: state.players.map(p => {
+      if (p.id !== playerId) return p
+      const current = p.extraCounters[counter] ?? 0
+      const next = Math.max(0, current + delta)
+      return { ...p, extraCounters: { ...p.extraCounters, [counter]: next } }
+    }),
   }
 }
 

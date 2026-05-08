@@ -6,6 +6,14 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.2.0',
+    date: '2026-05-08',
+    changes: [
+      { type: 'new', text: 'Counter panel per quadrant: Energy ⚡, Experience ⭐, Rad ☢, Charge ⚙, Lore 📜, Spore 🍄, Level ↑, Loyalty ◆, Time ⏳, Bounty 💰' },
+      { type: 'new', text: 'Active counter chips shown on card face when panel is closed' },
+    ],
+  },
+  {
     version: '1.1.0',
     date: '2026-05-08',
     changes: [
