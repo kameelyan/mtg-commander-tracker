@@ -36,11 +36,7 @@ interface Props {
 }
 
 function AdjBtn({
-  onTap,
-  onHold,
-  children,
-  className = '',
-  disabled,
+  onTap, onHold, children, className = '', disabled,
 }: {
   onTap: () => void
   onHold: () => void
@@ -49,15 +45,7 @@ function AdjBtn({
   disabled?: boolean
 }) {
   const lp = useLongPress(onTap, onHold)
-  return (
-    <button
-      className={className}
-      disabled={disabled}
-      {...lp}
-    >
-      {children}
-    </button>
-  )
+  return <button className={className} disabled={disabled} {...lp}>{children}</button>
 }
 
 export default function PlayerCard({
@@ -71,7 +59,6 @@ export default function PlayerCard({
   const nameRef = useRef<HTMLInputElement>(null)
 
   const startEdit = () => { setEditingName(true); setNameInput(player.name) }
-
   const commitName = () => {
     const trimmed = nameInput.trim()
     if (trimmed) onRename(player.id, trimmed)
@@ -82,6 +69,7 @@ export default function PlayerCard({
   const attackers = allPlayers.filter(p => p.id !== player.id)
   const totalCmdDamage = Object.values(player.commanderDamage).reduce((a, b) => a + b, 0)
   const activeCounters = COUNTER_DEFS.filter(c => (player.extraCounters[c.key] ?? 0) > 0)
+  const poisonAtLimit = player.poison >= POISON_THRESHOLD
 
   return (
     <div className={`player-card color-${player.color} ${player.eliminated ? 'eliminated' : ''}`}>
@@ -121,10 +109,7 @@ export default function PlayerCard({
                   <div className="cmd-progress-track">
                     <div
                       className={`cmd-progress-fill ${atLimit ? 'at-limit' : ''}`}
-                      style={{
-                        width: `${pct * 100}%`,
-                        background: `var(--color-${attacker.color})`,
-                      }}
+                      style={{ width: `${pct * 100}%`, background: `var(--color-${attacker.color})` }}
                     />
                   </div>
                 </div>
@@ -135,7 +120,7 @@ export default function PlayerCard({
         </div>
       )}
 
-      {/* Extra counters panel */}
+      {/* Counters panel */}
       {countersOpen && (
         <div className="counters-panel">
           <div className="counters-panel-header">
@@ -143,6 +128,31 @@ export default function PlayerCard({
             <button className="cmd-panel-close" onClick={() => setCountersOpen(false)}>✕</button>
           </div>
           <div className="counters-panel-rows">
+
+            {/* Poison — top of list, special game logic */}
+            <div className="counter-def-row">
+              <span className="counter-def-icon">☠</span>
+              <span className={`counter-def-label ${poisonAtLimit ? 'at-limit' : ''}`}>Poison</span>
+              <div className="counter-def-controls">
+                <AdjBtn
+                  className="cmd-adj-btn"
+                  onTap={() => onPoisonChange(player.id, -1)}
+                  onHold={() => onPoisonChange(player.id, -5)}
+                  disabled={player.poison === 0}
+                >−</AdjBtn>
+                <span className={`counter-def-val ${poisonAtLimit ? 'at-limit' : ''}`}>
+                  {player.poison}
+                </span>
+                <AdjBtn
+                  className="cmd-adj-btn"
+                  onTap={() => onPoisonChange(player.id, 1)}
+                  onHold={() => onPoisonChange(player.id, 5)}
+                >+</AdjBtn>
+              </div>
+            </div>
+
+            <div className="counters-divider" />
+
             {COUNTER_DEFS.map(({ key, label, icon }) => {
               const val = player.extraCounters[key] ?? 0
               return (
@@ -171,8 +181,13 @@ export default function PlayerCard({
         </div>
       )}
 
-      {/* Name row */}
+      {/* Name row — counters toggle in top-left corner, ⚔ stays bottom-right */}
       <div className="name-row">
+        <button
+          className={`counters-corner-btn ${countersOpen ? 'active' : ''}`}
+          onClick={() => { setCountersOpen(v => !v); setCmdOpen(false) }}
+          title="Counters"
+        >☠</button>
         {editingName ? (
           <input
             ref={nameRef}
@@ -196,10 +211,7 @@ export default function PlayerCard({
               className={`color-chip ${player.color === c ? 'active' : ''}`}
               style={{ background: `var(--color-${c})` }}
               title={c}
-              onMouseDown={e => {
-                e.preventDefault()
-                onRecolor(player.id, c)
-              }}
+              onMouseDown={e => { e.preventDefault(); onRecolor(player.id, c) }}
             />
           ))}
         </div>
@@ -223,25 +235,8 @@ export default function PlayerCard({
         >+</AdjBtn>
       </div>
 
-      {/* Status row */}
+      {/* Status row — commander damage button only, right-aligned */}
       <div className="status-row">
-        <div className="counter-group">
-          <AdjBtn
-            className="counter-btn"
-            onTap={() => onPoisonChange(player.id, -1)}
-            onHold={() => onPoisonChange(player.id, -5)}
-          >−</AdjBtn>
-          <div className={`counter-display ${player.poison >= POISON_THRESHOLD ? 'danger' : ''}`}>
-            <span className="counter-icon">☠</span>
-            <span className="counter-val">{player.poison}</span>
-          </div>
-          <AdjBtn
-            className="counter-btn"
-            onTap={() => onPoisonChange(player.id, 1)}
-            onHold={() => onPoisonChange(player.id, 5)}
-          >+</AdjBtn>
-        </div>
-
         <button
           className={`cmd-summary-btn ${totalCmdDamage >= COMMANDER_DAMAGE_THRESHOLD ? 'danger' : ''}`}
           onClick={() => { setCmdOpen(v => !v); setCountersOpen(false) }}
@@ -251,6 +246,7 @@ export default function PlayerCard({
         </button>
       </div>
 
+      {/* Commander damage chips */}
       {Object.entries(player.commanderDamage).some(([, v]) => v > 0) && !cmdOpen && (
         <div className="cmd-breakdown">
           {Object.entries(player.commanderDamage).map(([attackerId, dmg]) => {
@@ -268,8 +264,14 @@ export default function PlayerCard({
         </div>
       )}
 
-      {activeCounters.length > 0 && !countersOpen && (
+      {/* Active counter chips (poison + extras) */}
+      {(player.poison > 0 || activeCounters.length > 0) && !countersOpen && (
         <div className="extra-counter-chips">
+          {player.poison > 0 && (
+            <span className={`extra-chip ${poisonAtLimit ? 'danger' : ''}`}>
+              ☠ {player.poison}
+            </span>
+          )}
           {activeCounters.map(({ key, icon }) => (
             <span key={key} className="extra-chip">
               {icon} {player.extraCounters[key]}
@@ -277,15 +279,6 @@ export default function PlayerCard({
           ))}
         </div>
       )}
-
-      {/* Counters toggle — opposite end from the name */}
-      <button
-        className={`counters-toggle-btn ${countersOpen ? 'active' : ''}`}
-        onClick={() => { setCountersOpen(v => !v); setCmdOpen(false) }}
-      >
-        <span className="counters-toggle-icons">⚡⭐☢</span>
-        <span>{countersOpen ? 'Close' : 'Counters'}</span>
-      </button>
     </div>
   )
 }

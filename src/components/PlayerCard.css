@@ -34,8 +34,7 @@
 }
 
 .player-card.eliminated {
-  opacity: 0.4;
-  pointer-events: none;
+  opacity: 0.55;
 }
 
 .skull-overlay {
@@ -50,12 +49,34 @@
   pointer-events: none;
 }
 
-/* Name row — no dot, just name */
+/* Name row — counters corner btn + name */
 .name-row {
   display: flex;
   align-items: center;
   gap: 6px;
   position: relative;
+}
+
+/* Counters corner button — top-left, diagonal from ⚔ in bottom-right */
+.counters-corner-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.7);
+  flex-shrink: 0;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+}
+.counters-corner-btn:active { background: rgba(0,0,0,0.35); }
+.counters-corner-btn.active {
+  background: rgba(0,0,0,0.35);
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
 }
 .player-name {
   font-size: 0.9rem;
@@ -143,11 +164,11 @@
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* Status row */
+/* Status row — only ⚔, right-aligned to stay in bottom-right corner */
 .status-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 6px;
 }
 .counter-group {
@@ -340,6 +361,17 @@
   background: rgba(0,0,0,0.45);
 }
 
+/* ── Counters panel divider ── */
+.counters-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+  margin: 2px 0;
+}
+
+/* at-limit label inside counters panel */
+.counter-def-label.at-limit,
+.counter-def-val.at-limit { color: #fc8181; }
+
 /* ── Extra counter chips (shown when panel is closed) ── */
 .extra-counter-chips {
   display: flex;
@@ -355,34 +387,9 @@
   border: 1px solid rgba(255,255,255,0.25);
   color: #fff;
 }
-
-/* ── Counters toggle button — bottom of card, opposite the name ── */
-.counters-toggle-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: 100%;
-  padding: 5px 0;
-  border-radius: 6px;
-  background: rgba(0,0,0,0.18);
-  border: 1px solid rgba(255,255,255,0.12);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.7);
-  transition: background 0.1s, color 0.1s;
-  letter-spacing: 0.03em;
-}
-.counters-toggle-btn:active { background: rgba(0,0,0,0.3); }
-.counters-toggle-btn.active {
-  background: rgba(0,0,0,0.3);
-  border-color: rgba(255,255,255,0.3);
-  color: #fff;
-}
-.counters-toggle-icons {
-  font-size: 0.65rem;
-  letter-spacing: -0.05em;
-  opacity: 0.8;
+.extra-chip.danger {
+  border-color: #fc8181;
+  color: #fc8181;
 }
 
 /* ── Inline extra counters panel ── */

@@ -6,6 +6,15 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.5.0',
+    date: '2026-05-09',
+    changes: [
+      { type: 'change', text: 'Poison moved into the Counters panel; shows danger color at 10' },
+      { type: 'new', text: 'Eliminated players can be revived — adjust any value to recover from accidental death' },
+      { type: 'change', text: 'Counters button moved to top-left corner (☠), diagonally opposite the commander damage button (⚔ bottom-right)' },
+    ],
+  },
+  {
     version: '1.4.0',
     date: '2026-05-08',
     changes: [
