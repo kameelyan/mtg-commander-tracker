@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# MTG Commander Life Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A mobile-first PWA for tracking life totals, commander damage, poison counters, and extra counters during Commander (EDH) games of Magic: The Gathering.
 
-Currently, two official plugins are available:
+**Live:** https://kameelyan.github.io/mtg-commander-tracker
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Quadrant layout — each player's card faces them (top row rotated 180°)
+- Life total tracking with tap ±1 / hold ±10
+- Life change history — moments grouped with 2 s idle timeout, per-player panel
+- Commander damage matrix with partner commander support (Cmd 1 / Cmd 2)
+- Poison counter tracking (elimination at 10)
+- Extra counters: Energy, Experience, Rad, Charge, Lore, Spore, Level, Loyalty, Time, Bounty
+- Player elimination detection (0 life, 10 poison, or 21 commander damage from any one commander)
+- Ascending-life mode (starting life = 0, e.g. Lorcana — first to 20 wins)
+- 2–6 players, custom starting life
+- MTG color identity themes per player
+- Installable PWA — works offline on Android and Chrome OS
+- Rename players in-place
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Ideas Backlog
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Things worth doing but not yet scheduled. Rough priority order within each section.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Gameplay
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [ ] **Monarch tracking** — crown icon that passes between players; visible on the board at a glance
+- [ ] **The Ring tracking** — ring tempts you mechanic; track which player is the ring-bearer and ring level (1–4)
+- [ ] **Mana pool tracker** — quick floating panel to track floating mana mid-turn
+- [ ] **Storm count** — simple incrementing counter for the current turn, auto-resets on next turn
+- [ ] **Turn order indicator** — highlight whose turn it is; arrow or glow around their card
+- [ ] **Game timer** — total elapsed time + optional per-turn timer
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### UX / Polish
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- [ ] **Undo last change** — single-tap undo button (or shake gesture) that reverses the last life/counter delta
+- [ ] **Haptic feedback** — vibrate on tap/hold for tactile confirmation (Web Vibration API)
+- [ ] **Player color picker** — let players choose their own color identity instead of auto-assigned
+- [ ] **Custom player avatars / commander art** — let players paste a Scryfall image URL for their commander
+- [ ] **Landscape / tablet layout** — alternate grid layout optimised for horizontal screens
+- [ ] **Font size scaling** — accessibility setting to bump up life total font size
+- [ ] **Sound effects** — optional subtle click/chime on life changes
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Social / Session
+
+- [ ] **Game log export** — share a plain-text or CSV summary of all life moments from the session
+- [ ] **Multi-device sync** — real-time sync across phones so each player can control their own card
+- [ ] **Game history across sessions** — persist completed games with winner and final life totals
+
+### Technical
+
+- [ ] **Custom PWA icons** — replace generic icons with CMD-symbol branded 192/512 px PNGs
+- [ ] **Dark / light mode toggle** — respect system preference by default, manual override in menu
+- [ ] **Accessibility audit** — ARIA labels, focus management for keyboard/switch-access users
