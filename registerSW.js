@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/mtg-commander-tracker/sw.js', { scope: '/mtg-commander-tracker/' })})}
