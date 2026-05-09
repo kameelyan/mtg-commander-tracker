@@ -6,6 +6,35 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.7.0',
+    date: '2026-05-09',
+    changes: [
+      { type: 'new', text: 'Life total change history — taps are grouped into moments; running delta shown while tapping, committed after 2 s of idle' },
+      { type: 'new', text: 'Per-player history panel (clock icon in status row) shows every life change with source, delta, and resulting total' },
+      { type: 'new', text: 'Commander damage changes appear in history with the attacker\'s name and CMD set symbol' },
+      { type: 'new', text: 'Partner commander support — tap the "2" button in any attacker cell to split tracking into Cmd 1 and Cmd 2; each is checked independently for the 21-damage rule' },
+      { type: 'new', text: 'Starting life of 0 for ascending-life games (e.g. Lorcana) — first to 20 wins, life hitting 0 does not trigger elimination' },
+      { type: 'new', text: 'Settings (players, starting life, hints) now live directly in the hamburger menu — one tap away instead of two' },
+      { type: 'change', text: 'Hamburger menu moved to a fixed button at the centre of the board; opens a full-screen overlay' },
+      { type: 'change', text: 'Reset moved into the hamburger menu with a two-tap confirmation' },
+      { type: 'change', text: 'Poison icon updated to the New Phyrexia set symbol' },
+      { type: 'fix', text: 'Modal overlays (Settings, Release Notes) now correctly layer above player cards' },
+      { type: 'fix', text: 'Panel close buttons given clearance from the centre hamburger button' },
+    ],
+  },
+  {
+    version: '1.6.0',
+    date: '2026-05-09',
+    changes: [
+      { type: 'new', text: 'Commander damage button replaced with a mini table grid — see all damage at a glance' },
+      { type: 'new', text: 'Commander damage panel now shows a full grid mirroring the table layout; tap ±1, hold ±10' },
+      { type: 'new', text: 'Self-commander damage supported — you can now deal damage from your own commander' },
+      { type: 'change', text: 'MTG infect icon replaces skull for poison; all counter types now use official MTG icons; experience uses the Commander 2015 set symbol' },
+      { type: 'change', text: 'Counters menu icon updated to the generic +1/+1 counter symbol' },
+      { type: 'change', text: 'Removed circles from all +/− buttons; more spacing around life totals' },
+    ],
+  },
+  {
     version: '1.5.0',
     date: '2026-05-09',
     changes: [

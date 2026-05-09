@@ -23,9 +23,21 @@ export interface Player {
   life: number
   poison: number
   color: PlayerColor
-  commanderDamage: Record<number, number>
+  commanderCount: 1 | 2                   // 2 = partner commanders
+  commanderDamage: Record<number, number>  // primary commander damage received per attacker
+  commanderDamage2: Record<number, number> // partner commander damage received per attacker
   extraCounters: Partial<Record<CounterType, number>>
   eliminated: boolean
+}
+
+export interface LifeMoment {
+  id: number
+  playerId: number
+  delta: number                        // net life change (positive = gain, negative = loss)
+  newLife: number                      // life total after this moment
+  source: 'life' | 'commander'
+  attackerId?: number                  // set when source === 'commander'
+  timestamp: number
 }
 
 export interface GameState {

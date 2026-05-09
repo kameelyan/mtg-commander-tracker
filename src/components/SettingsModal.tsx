@@ -41,7 +41,7 @@ export default function SettingsModal({ currentPlayerCount, currentStartingLife,
         <div className="setting-row">
           <label>Starting Life</label>
           <div className="life-select-btns">
-            {[20, 30, 40].map(l => (
+            {[0, 20, 30, 40].map(l => (
               <button
                 key={l}
                 className={`count-btn ${startingLife === l ? 'active' : ''}`}
